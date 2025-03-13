@@ -7,10 +7,7 @@ import 'purchase_confirmation_screen.dart';
 class PlanDetailsScreen extends StatefulWidget {
   final Plan plan;
 
-  const PlanDetailsScreen({
-    Key? key,
-    required this.plan,
-  }) : super(key: key);
+  const PlanDetailsScreen({Key? key, required this.plan}) : super(key: key);
 
   @override
   _PlanDetailsScreenState createState() => _PlanDetailsScreenState();
@@ -20,9 +17,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
   bool _isPurchasing = false;
 
   Future<void> _handlePurchase() async {
-    setState(() {
-      _isPurchasing = true;
-    });
+    setState(() => _isPurchasing = true);
 
     try {
       final result = await DatabaseService.purchasePlan(widget.plan.id);
@@ -40,60 +35,53 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
         ),
       );
     } catch (e) {
-      print('Error purchasing plan: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to purchase plan. Please try again.'),
-          backgroundColor: Colors.red,
+          content: Text(
+            'Failed to purchase plan. Please try again.',
+            style: GoogleFonts.poppins(color: Colors.white),
+          ),
+          backgroundColor: Colors.redAccent,
         ),
       );
     } finally {
-      if (mounted) {
-        setState(() {
-          _isPurchasing = false;
-        });
-      }
+      if (mounted) setState(() => _isPurchasing = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white, 
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         title: Text(
           'Plan Details',
-          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),
+          style: GoogleFonts.poppins(
+              fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Plan Card with gradient background
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.blueAccent, Colors.deepPurpleAccent],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
                 borderRadius: BorderRadius.circular(16),
+                color: Colors.blueAccent.withOpacity(0.1),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 8,
-                    spreadRadius: 2,
-                    offset: Offset(0, 4),
-                  ),
+                      color: Colors.blueAccent,
+                      blurRadius: 8,
+                      offset: Offset(0, 4))
                 ],
+                border: Border.all(color: Colors.blueAccent.withOpacity(0.3)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,10 +89,9 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                   Text(
                     widget.plan.name,
                     style: GoogleFonts.poppins(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
                   ),
                   SizedBox(height: 10),
                   Row(
@@ -112,18 +99,15 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                       Text(
                         '\$${widget.plan.price.toStringAsFixed(2)}',
                         style: GoogleFonts.poppins(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                       ),
                       SizedBox(width: 10),
                       Text(
                         '/ ${widget.plan.validityText}',
                         style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.white70,
-                        ),
+                            fontSize: 16, color: Colors.black54),
                       ),
                     ],
                   ),
@@ -132,33 +116,28 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
             ),
             SizedBox(height: 24),
 
-            // Features Section
             Text(
               'Features',
               style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
             SizedBox(height: 12),
 
-            // Features List
             ...widget.plan.features.map((feature) => Padding(
                   padding: EdgeInsets.symmetric(vertical: 6),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.check_circle_rounded,
-                        color: Colors.green,
-                        size: 22,
-                      ),
+                      Icon(Icons.check_circle_rounded,
+                          color: Colors.greenAccent, size: 22),
                       SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           feature,
-                          style: GoogleFonts.poppins(fontSize: 16),
+                          style: GoogleFonts.poppins(
+                              fontSize: 16, color: Colors.black87),
                         ),
                       ),
                     ],
@@ -167,7 +146,6 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
 
             SizedBox(height: 32),
 
-            // Purchase Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -175,8 +153,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                      borderRadius: BorderRadius.circular(12)),
                   backgroundColor: Colors.blueAccent,
                 ),
                 child: _isPurchasing
@@ -184,10 +161,9 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                     : Text(
                         'Purchase Plan',
                         style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
               ),
             ),

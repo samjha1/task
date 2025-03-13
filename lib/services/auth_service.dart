@@ -1,4 +1,3 @@
-// lib/services/auth_service.dart
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
@@ -34,7 +33,6 @@ class AuthService {
       );
       
       if (authResult.user != null) {
-        // Create new user document
         final newUser = User(
           id: authResult.user!.uid,
           name: name,

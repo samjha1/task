@@ -1,4 +1,3 @@
-// lib/models/purchase_model.dart
 class Purchase {
   final String id;
   final String userId;

@@ -8,30 +8,24 @@ class DatabaseService {
   static final CollectionReference _purchasesCollection =
       _firestore.collection('purchases');
 
-  /// Fetch available plans from Firestore as a stream
   static Stream<QuerySnapshot> getPlans() {
     return _plansCollection.snapshots();
   }
 
-  /// Purchase a plan and generate a QR code (Firestore-based)
   static Future<Map<String, dynamic>> purchasePlan(String planId) async {
     try {
-      // Fetch plan details
       DocumentSnapshot planDoc = await _plansCollection.doc(planId).get();
       if (!planDoc.exists) {
         throw Exception("Plan not found");
       }
       Map<String, dynamic> planData = planDoc.data() as Map<String, dynamic>;
 
-      // Generate unique purchase ID and QR code data
       String purchaseId = const Uuid().v4();
       String qrCodeData = "Purchase ID: $purchaseId, Plan: ${planData['name']}";
 
-      // Calculate expiry date
       DateTime expiryDate =
           DateTime.now().add(Duration(days: planData['validityDays'] ?? 30));
 
-      // Store purchase in Firestore
       await _purchasesCollection.doc(purchaseId).set({
         'planId': planId,
         'planName': planData['name'],
@@ -52,7 +46,6 @@ class DatabaseService {
     }
   }
 
-  /// Check for expired plans and update their status
   static Future<void> checkAndUpdateExpiredPlans() async {
     try {
       QuerySnapshot snapshot = await _purchasesCollection.get();

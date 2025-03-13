@@ -1,4 +1,3 @@
-// lib/widgets/plan_card.dart
 import 'package:flutter/material.dart';
 import '../models/plan_model.dart';
 
@@ -77,7 +76,7 @@ class PlanCard extends StatelessWidget {
                   Text(
                     'View Details',
                     style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.white,
                     ),
                   ),
                   Icon(

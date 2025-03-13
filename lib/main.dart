@@ -22,12 +22,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Subscription App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      routerConfig: _router, // Using GoRouter for navigation
+      routerConfig: _router,
     );
   }
 }
 
-// Configure navigation routes
 final GoRouter _router = GoRouter(
   initialLocation:
       FirebaseAuth.instance.currentUser == null ? '/login' : '/plans',

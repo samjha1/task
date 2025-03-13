@@ -1,4 +1,3 @@
-// lib/models/
 class User {
   final String id;
   final String name;

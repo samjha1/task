@@ -66,7 +66,8 @@ class PurchaseConfirmationScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16),
                     _buildSummaryRow('Plan', plan.name),
-                    _buildSummaryRow('Price', '\$${plan.price.toStringAsFixed(2)}'),
+                    _buildSummaryRow(
+                        'Price', '\$${plan.price.toStringAsFixed(2)}'),
                     _buildSummaryRow('Validity', plan.validityText),
                     _buildSummaryRow(
                       'Expiry Date',
@@ -84,7 +85,9 @@ class PurchaseConfirmationScreen extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => QRCodeScreen(),
+                      builder: (context) => QRCodeScreen(
+                        userId: 'userid',
+                      ),
                     ),
                   );
                 },

@@ -1,9 +1,8 @@
-// lib/models/plan_model.dart
 class Plan {
   final String id;
   final String name;
   final double price;
-  final int validity; // in days
+  final int validity;
   final List<String> features;
 
   Plan({
