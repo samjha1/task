@@ -1,7 +1,8 @@
-import 'package:uuid/uuid.dart';
-import 'package:crypto/crypto.dart';
 import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
+import 'package:uuid/uuid.dart';
 
 class QRCodeService {
   static Future<String> generateQRCode({
@@ -9,6 +10,10 @@ class QRCodeService {
     required String planId,
     required DateTime expiryDate,
   }) async {
+    // First check if the document exists
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
     final uuid = Uuid();
     final uniqueId = uuid.v4();
 
@@ -20,11 +25,19 @@ class QRCodeService {
 
     final qrCodeData = '$dataString|${digest.toString()}';
 
-    await FirebaseFirestore.instance.collection('users').doc(userId).update({
-      'qrcode': qrCodeData,
-      'planId': planId,
-      'planExpiryDate': expiryDate.toIso8601String(),
-    });
+    if (!userDoc.exists) {
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
+        'qrCodeData': qrCodeData,
+        'planId': planId,
+        'planExpiryDate': expiryDate.toIso8601String(),
+      });
+    } else {
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'qrCodeData': qrCodeData,
+        'planId': planId,
+        'planExpiryDate': expiryDate.toIso8601String(),
+      });
+    }
 
     return qrCodeData;
   }
